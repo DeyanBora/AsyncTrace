@@ -1,3 +1,6 @@
+// Use SetWantsUseOverlap() in other functions to request async operation
+// If you want to change overlap parameters check for RequestUseOverlap() to change its parameters
+
 #include "Engine/World.h"
 void AAsyncOverlap::Tick(float DeltaTime)
 {
@@ -19,6 +22,7 @@ void AAsyncOverlap::Tick(float DeltaTime)
 		bWantsHitOverlap = false;
 	}
 }
+
 FTraceHandle AAsyncOverlap::RequestUseOverlap()
 {
 	UWorld* World = GetWorld();
