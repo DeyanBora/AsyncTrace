@@ -1,5 +1,24 @@
 #include "Engine/World.h"
+void AAsyncOverlap::Tick(float DeltaTime)
+{
+	if (LastHitOverlapHandle._Data.FrameNumber != 0)
+		{
+			FOverlapDatum OutData;
+			if (GetWorld()->QueryOverlapData(LastHitOverlapHandle, OutData))
+			{
+				// Clear out handle so next tick we don't enter
+				LastHitOverlapHandle._Data.FrameNumber = 0;
+				// trace is finished, do stuff with results
+				DoWorkWithHitOverlapResults(OutData);
+			}
+		}
 
+	if (bWantsHitOverlap)
+	{
+		LastHitOverlapHandle = RequestHitOverlap();
+		bWantsHitOverlap = false;
+	}
+}
 FTraceHandle AAsyncOverlap::RequestUseOverlap()
 {
 	UWorld* World = GetWorld();
