@@ -23,6 +23,29 @@ void AAsyncOverlap::Tick(float DeltaTime)
 	}
 }
 
+void AAsyncOverlap::ReceiveOnGrabOverlapCompleted(const TArray<FOverlapResult>& Results)
+{
+	FOverlapResult OverlapResult;
+	AActor* EnemyActorPointer = nullptr;
+
+	if (!Results.IsEmpty())
+	{
+		for (FOverlapResult Result : Results)
+		{
+			if (Result.GetActor() != this)
+			{
+
+				EnemyActorPointer = Result.GetActor();
+				if (AEnemyCharacter* EnemyMC = Cast<AEnemyCharacter>(EnemyActorPointer))
+				{
+					// Work with Overlap result
+				}
+
+			}
+		}
+	}
+}
+
 FTraceHandle AAsyncOverlap::RequestUseOverlap()
 {
 	UWorld* World = GetWorld();
