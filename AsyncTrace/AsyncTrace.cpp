@@ -1,5 +1,25 @@
 #include "Engine/World.h"
 
+void AAsyncTraceActor::Tick(float DeltaTime)
+{
+	if (LastTraceHandle._Data.FrameNumber != 0)
+	{
+		FTraceDatum OutData;
+		if (GetWorld()->QueryTraceData(LastTraceHandle, OutData))
+		{
+			// Clear out handle so next tick we don't continue
+			LastTraceHandle._Data.FrameNumber = 0;
+			// trace is finished, do stuff with results
+			DoWorkWithTraceResults(OutData);
+		}
+	}
+	if (bWantsTrace)
+	{
+		LastTraceHandle = RequestTrace();
+		bWantsTrace = false;
+	}
+}
+
 //Work with Results
 void AAsyncTraceActor::ReceiveOnTraceCompleted(const TArray<FHitResult>& Results)
 {
